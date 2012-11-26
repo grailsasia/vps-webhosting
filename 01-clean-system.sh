@@ -16,10 +16,6 @@ DISABLE_GETTY=yes
 # Yes if you want to repalce bash with dash - a lighter alternative
 INSTALL_DASH=no
 
-# Postfix for sending emails to outside world
-INSTALL_POSTFIX=no
-SYSTEM_EMAIL=admin@grails.asia
-
 # Change timezone to default?
 RECONFIGURE_TIMEZONE=yes
 SERVER_TIMEZONE="Asia/Manila"
@@ -179,25 +175,9 @@ function do_install_syslogd {
     invoke-rc.d inetutils-syslogd start   
 }
 
-function do_install_postfix {
-    check_install postfix postfix
-    #sed -i "s/dc_eximconfig_configtype='local'/dc_eximconfig_configtype='internet'/" /etc/exim4/update-exim4.conf.conf
-    #invoke-rc.d postfix restart
-    cat > /etc/aliases <<END
-postmaster:    $SYSTEM_EMAIL
-MAILER-DAEMON: $SYSTEM_EMAIL
-abuse:         $SYSTEM_EMAIL
-spam:          $SYSTEM_EMAIL
-hostmaster:    $SYSTEM_EMAIL
-root:          $SYSTEM_EMAIL
-nobody:        $SYSTEM_EMAIL
-mail:          $SYSTEM_EMAIL
-END
-    newaliases
-}
-
 function do_reconfigure_timezone {
     echo "Timezone"
+    dpkg-reconfigure -f noninteractive tzdata
     echo $SERVER_TIMEZONE > /etc/timezone    
     dpkg-reconfigure -f noninteractive tzdata
 }
@@ -225,11 +205,6 @@ fi
 if [ $INSTALL_DASH = "yes" ]
 then
   do_install_dash
-fi
-
-if [ $INSTALL_POSTFIX = "yes" ]
-then
-  do_install_postfix
 fi
 
 if [ $RECONFIGURE_TIMEZONE = "yes" ]
