@@ -16,8 +16,10 @@ DISABLE_GETTY=yes
 # Yes if you want to repalce bash with dash - a lighter alternative
 INSTALL_DASH=no
 
-# Change timezone to default?
+# Configure timezone?
 RECONFIGURE_TIMEZONE=yes
+
+# The timezone to set
 SERVER_TIMEZONE="Asia/Manila"
 
 
