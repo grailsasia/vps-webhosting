@@ -39,7 +39,7 @@ SERVER_TIMEZONE="Asia/Manila"
 SETUP_WEBSERVER=1
 
 # Install Nginx Webserver
-INSTALL_NGINX=yes
+INSTALL_NGINX=1
 
 # Number of cpu cores in your VPS/server.
 # Will be used to configure nginx for optimum performance
@@ -91,6 +91,7 @@ DISABLE_ROOT_LOGIN=1
 # prevent password login.  All login will be by public key.
 # Be sure to upload your public key to a server user's authorized_keys,
 # otherwise access to your VPS will be lost.
+# Set to 0 if you dont know how to do key pair
 DISABLE_PASSWORD_LOGIN=1
 
 
@@ -642,6 +643,8 @@ function do_setup_security {
     do_disable_password_login
   fi
 
+  iptables -F
+  echo "Restart the system later for the changes to take effect."
 }
 
 ########################################################################
